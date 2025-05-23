@@ -277,7 +277,7 @@ class Jogo:
         if linhas_completas > 0:
             self.pontuacao += [0, 100, 300, 700, 1500][linhas_completas] * self.nivel
             self.linhas_eliminadas += linhas_completas
-            self.nivel = self.linhas_eliminadas // 10 + 1
+            self.nivel = self.linhas_eliminadas // 10 + 1 #Calculo do nivel
             self.tempo_queda = max(0.1, TEMPO_QUEDA_INICIAL - (self.nivel - 1) * 0.05)
             som_linha.play()
             self.meme_msg = random.choice(MEMES_LINHA)
