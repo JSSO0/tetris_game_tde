@@ -62,7 +62,7 @@ som_over = pygame.mixer.Sound("fail_trombone.mp3")
 
 # Carrega imagem meme (certifique-se de ter o arquivo)
 try:
-    meme_img = pygame.image.load("meme_gameover.png")
+    meme_img = pygame.image.load("meme_gameover.jpg")
 except FileNotFoundError:
     meme_img = None  # Caso a imagem não exista
 # Configurações do jogo
@@ -435,18 +435,26 @@ class Jogo:
     
     def desenhar_game_over(self):
         """Desenha a tela de game over"""
-        # Sorteia a mensagem e carrega a imagem apenas uma vez
-        if not self.meme_gameover_msg:  # Executa apenas na primeira vez
+        # Sorteia a mensagem e carregamento da imagem
+        if not self.meme_gameover_msg:
             self.meme_gameover_msg = random.choice(MEME_GAMEOVER)
-            if meme_img:  # Garante que a imagem seja carregada corretamente
-                self.meme_gameover_img = meme_img
+            if meme_img:
+                # Cria uma cópia da imagem para ajustar a opacidade
+                self.meme_gameover_img = meme_img.copy()
+                self.meme_gameover_img.set_alpha(128)  # 50% de opacidade
 
-        # Camada semi-transparente
+        # ------ Ordem de desenho corrigida ------ #
+        # 1. Imagem do meme (fundo com opacidade)
+        if self.meme_gameover_img:
+            img_rect = self.meme_gameover_img.get_rect(center=(LARGURA_TELA//2, ALTURA_TELA//2 + 160))
+            self.tela.blit(self.meme_gameover_img, img_rect)
+
+        # 2. Camada semi-transparente (escurece tudo, incluindo a imagem)
         s = pygame.Surface((LARGURA_TELA, ALTURA_TELA), pygame.SRCALPHA)
-        s.fill((0, 0, 0, 180))
+        s.fill((0, 0, 0, 180))  # Aumente o valor 180 para deixar mais escuro
         self.tela.blit(s, (0, 0))
 
-        # Texto principal
+        # 3. Textos (sobrepostos à camada e à imagem)
         texto = self.fonte_grande.render("GAME OVER", True, BRANCO)
         self.tela.blit(texto, (LARGURA_TELA//2 - texto.get_width()//2, ALTURA_TELA//2 - 50))
         
@@ -456,14 +464,9 @@ class Jogo:
         texto = self.fonte.render("Pressione R para reiniciar", True, BRANCO)
         self.tela.blit(texto, (LARGURA_TELA//2 - texto.get_width()//2, ALTURA_TELA//2 + 50))
 
-        # Mensagem meme (fixa)
+        # 4. Mensagem meme (sobreposta aos textos)
         t = self.fonte.render(self.meme_gameover_msg, True, (255, 255, 0))
         self.tela.blit(t, (LARGURA_TELA//2 - t.get_width()//2, ALTURA_TELA//2 + 80))
-
-        # Imagem meme (centralizada)
-        if self.meme_gameover_img:
-            img_rect = self.meme_gameover_img.get_rect(center=(LARGURA_TELA//2, ALTURA_TELA//2 + 160))
-            self.tela.blit(self.meme_gameover_img, img_rect)
 
     
     def desenhar_pausado(self):
