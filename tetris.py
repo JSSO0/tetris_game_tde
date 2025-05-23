@@ -238,6 +238,8 @@ class Jogo:
         self.meme_msg = ""
         self.meme_timer = 0
         self.tremor_offset = 0  # Adicione estas três linhas
+        self.meme_gameover_msg = ""  # Nova variável para armazenar a mensagem
+        self.meme_gameover_img = None  # Imagem carregada uma única vez
         self.iniciar_jogo()
     
     def iniciar_jogo(self):
@@ -252,6 +254,7 @@ class Jogo:
         self.tempo_queda = TEMPO_QUEDA_INICIAL
         self.game_over = False
         self.pausado = False
+        self.meme_gameover_msg = ""  # Reseta a mensagem
     
     def verificar_linhas_completas(self):
         """Verifica e remove linhas completas, atualizando a pontuação"""
@@ -432,7 +435,12 @@ class Jogo:
     
     def desenhar_game_over(self):
         """Desenha a tela de game over"""
-        som_over.play()
+        # Sorteia a mensagem e carrega a imagem apenas uma vez
+        if not self.meme_gameover_msg:  # Executa apenas na primeira vez
+            self.meme_gameover_msg = random.choice(MEME_GAMEOVER)
+            if meme_img:  # Garante que a imagem seja carregada corretamente
+                self.meme_gameover_img = meme_img
+
         # Camada semi-transparente
         s = pygame.Surface((LARGURA_TELA, ALTURA_TELA), pygame.SRCALPHA)
         s.fill((0, 0, 0, 180))
@@ -448,15 +456,15 @@ class Jogo:
         texto = self.fonte.render("Pressione R para reiniciar", True, BRANCO)
         self.tela.blit(texto, (LARGURA_TELA//2 - texto.get_width()//2, ALTURA_TELA//2 + 50))
 
-        # Mensagem meme
-        meme_text = random.choice(MEME_GAMEOVER)
-        t = self.fonte.render(meme_text, True, (255, 255, 0))
+        # Mensagem meme (fixa)
+        t = self.fonte.render(self.meme_gameover_msg, True, (255, 255, 0))
         self.tela.blit(t, (LARGURA_TELA//2 - t.get_width()//2, ALTURA_TELA//2 + 80))
 
-        # Imagem meme (centralizada abaixo do texto)
-        if meme_img:
-            img_rect = meme_img.get_rect(center=(LARGURA_TELA//2, ALTURA_TELA//2 + 160))
-            self.tela.blit(meme_img, img_rect)
+        # Imagem meme (centralizada)
+        if self.meme_gameover_img:
+            img_rect = self.meme_gameover_img.get_rect(center=(LARGURA_TELA//2, ALTURA_TELA//2 + 160))
+            self.tela.blit(self.meme_gameover_img, img_rect)
+
     
     def desenhar_pausado(self):
         """Desenha a tela de jogo pausado"""
