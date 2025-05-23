@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-"""
-Jogo Tetris implementado em Python usando Pygame
-"""
-
 import pygame
 import random
 import time
@@ -20,6 +13,7 @@ pygame.mixer.music.play(-1)
 
 som_linha = pygame.mixer.Sound("explosion.mp3")
 som_gameover = pygame.mixer.Sound("gameover.mp3")
+
 # Cores
 PRETO = (0, 0, 0)
 BRANCO = (255, 255, 255)
@@ -37,6 +31,7 @@ CORES = [
     (160, 0, 240),      # Roxo - T
     (240, 0, 0)         # Vermelho - Z
 ]
+
 # Mensagens meme
 MEMES_LINHA = [
     "TAKE THAT!",
@@ -237,7 +232,7 @@ class Jogo:
         self.proxima_peca = Peca(0, 0)
         self.meme_msg = ""
         self.meme_timer = 0
-        self.tremor_offset = 0  # Adicione estas três linhas
+        self.tremor_offset = 0 
         self.meme_gameover_msg = ""  # Nova variável para armazenar a mensagem
         self.meme_gameover_img = None  # Imagem carregada uma única vez
         self.iniciar_jogo()
@@ -451,7 +446,7 @@ class Jogo:
 
         # 2. Camada semi-transparente (escurece tudo, incluindo a imagem)
         s = pygame.Surface((LARGURA_TELA, ALTURA_TELA), pygame.SRCALPHA)
-        s.fill((0, 0, 0, 180))  # Aumente o valor 180 para deixar mais escuro
+        s.fill((0, 0, 0, 180))  
         self.tela.blit(s, (0, 0))
 
         # 3. Textos (sobrepostos à camada e à imagem)

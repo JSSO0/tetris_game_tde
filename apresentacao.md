@@ -58,23 +58,3 @@
 * 2 linhas: 300 × nível
 * 3 linhas: 700 × nível
 * 4 linhas (Tetris): 1500 × nível
-
----
-
-## 💡 Como Usar em uma Apresentação
-
-1. **Demonstre a estrutura de classes** :
-
-* Mostre como `Peca` e `Jogo` interagem.
-
-1. **Destaque a renderização** :
-
-* Explique o uso de `pygame.Surface` para overlays.
-
-1. **Interaja com os memes** :
-
-* Mostre mensagens e imagem de game over.
-
-1. **Simule cenários** :
-
-* Complete linhas para mostrar tremor de tela e efeitos sonoros.
